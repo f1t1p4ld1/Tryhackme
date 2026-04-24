@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Blind SQLi - Authentication Bypass</title>
+  <meta name="generator" content="CherryTree">
+  <link rel="stylesheet" href="res/styles4.css" type="text/css" />
+</head>
+<body>
+<div class='page'><h1 class='title'>Blind SQLi - Authentication Bypass</h1><br/><p><strong>BLIND SQLi</strong></p><p></p><p>A diferencia de la inyeccion SQL en banda donde podemos ver los resultados de nuestro ataque directamente en la pantalla, la Blind SQLi ocurre cuando recibimos poca o ninguna retroalimentacion para confirmar si nuestras consultas </p><p>inyectadas fueron exitosas. Esto se debe a que los mensajes de error se han desactivado, pero la inyeccion sigue funcionando, quizas le sorprenda que solo necesitamos esa corta retroalimentacion para enumerar correctamente una base de</p><p>datos completa</p><p></p><p><strong>Authentication Bypass</strong></p><p></p><p>Una de las tecnicas de inyeccion SQL a ciegas mas sencillas es cuando se omiten metodos de autenticacion como formularios de inicio de sesion. En este caso, no estamos tan interesados en recuperar datos de la base de datos, </p><p>simplemente pasar el inicio de sesion.</p><p></p><p>Los formularios de acceso que estan conectados a una base de datos de usuarios a menudo se desarrollan de tal manera que la aplicacion web no este interesada en el contenido del nombre de usuario y la clave, pero mas en si ambos </p><p>forman un par coincidente en la tabla de usuarios, en terminos basicos, la aplicacion web pregunta a la base de datos: tiene un usuario con el nombre de usuario bob y la clave bob123? la base de datos responde con si o no(verdadero/</p><p>falso) y dependiendo de esa respuesta, se determina si la aplicacion le permite proceder o no.</p><p></p><p></p><p><code>select * from users where username=&#39;%username%&#39; and password=&#39;%password%&#39; LIMIT 1;</code></p><p></p><p>Athentication ByPass</p><p><code>select * from users where username=&#39;&#39; and password=&#39;&#39; OR 1=1;</code></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p></div>
+</body>
+</html>

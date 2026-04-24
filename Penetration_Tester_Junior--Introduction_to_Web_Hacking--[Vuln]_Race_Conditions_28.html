@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>[Vuln] Race Conditions</title>
+  <meta name="generator" content="CherryTree">
+  <link rel="stylesheet" href="res/styles4.css" type="text/css" />
+</head>
+<body>
+<div class='page'><h1 class='title'>[Vuln] Race Conditions</h1><br/><p></p><p><strong>Race Conditions</strong></p><p></p><p><img src="images/28-1.png" alt="images/28-1.png" /></p><p></p><p><img src="images/28-2.png" alt="images/28-2.png" /></p><p></p><p><img src="images/28-3.png" alt="images/28-3.png" /></p><p></p><p>El valor de la transaccion no importa si es 0 o 99999, no interfiere con la operacion</p><p>Se puede manipular el interes de la transaccion</p><p>No se puede manipular el valor final que recibe</p><p></p><p>Single Conexion</p><p>Se enviaron 10$ por 10 transacciones y fueron exitosas las primeras 4 debido a que la cuenta tenia 40$</p><p></p><p>Separate Connections</p><p>Se enviaron 10$ por 10 transacciones, si llegaron a la cuenta destino y se desconto de la cuenta original, solo que se demoro en actualizar</p><p></p><p>Parallax</p><p></p><p>365</p><p>18.25</p><p>346.75</p><p></p><p>155</p><p>310</p></div>
+</body>
+</html>
