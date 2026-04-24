@@ -1,100 +1,119 @@
-right_arrow_heavy = '&#129090;'
-left_arrow_heavy = '&#129088;'
+// ===== CONFIG =====
+const iframe = document.getElementById("page_frame");
 
+// ===== CHANGE FRAME + ACTIVE LINK =====
+function changeFrame(file_path, el = null) {
+  iframe.src = file_path;
 
-function changeFrame(file_path){
-	var iframe = document.getElementById("page_frame");
-	iframe.src = file_path;
+  // Guardar última página
+  localStorage.setItem("last_page", file_path);
+
+  // Quitar active anterior
+  document.querySelectorAll('.link').forEach(link => {
+    link.classList.remove('active');
+  });
+
+  // Marcar actual
+  if (el) {
+    el.classList.add('active');
+  }
 }
 
-function toggleSubTree(element){
-	var nextSibling = element.parentElement.nextElementSibling;
-	if(nextSibling.tagName === 'UL'){
-		nextSibling.classList.toggle('hide');
-		if(element.textContent === '+'){
-			element.textContent = '-'
-		}else{
-			element.textContent = '+'
-		}
-	}
+// ===== EVENT DELEGATION (más eficiente) =====
+document.addEventListener("click", function (e) {
+
+  // CLICK EN LINK
+  if (e.target.classList.contains("link")) {
+    const file = e.target.getAttribute("onclick")
+      ?.match(/'([^']+)'/)?.[1];
+
+    if (file) {
+      changeFrame(file, e.target);
+    }
+  }
+
+  // CLICK EN TOGGLE
+  if (e.target.classList.contains("toggle")) {
+    toggleSubTree(e.target);
+  }
+
+});
+
+// ===== TOGGLE SUBTREE =====
+function toggleSubTree(button) {
+  const li = button.parentElement;
+  const subtree = li.querySelector("ul");
+
+  if (!subtree) return;
+
+  subtree.classList.toggle("hide");
+
+  // cambiar símbolo
+  button.textContent = subtree.classList.contains("hide") ? "+" : "-";
+
+  // animación suave
+  subtree.style.transition = "all 0.2s ease";
 }
 
-function expandAllSubtrees(element){
-	var subtrees = document.getElementsByClassName("subtree");
-	for(var i=0; i<subtrees.length; i++){
-		var subtree = subtrees[i];
-		subtree.classList.remove('hide');
-		subtree.previousElementSibling.firstChild.textContent = '-';
-	}
+// ===== EXPAND / COLLAPSE ALL =====
+function expandAllSubtrees() {
+  document.querySelectorAll(".subtree").forEach(ul => {
+    ul.classList.remove("hide");
+  });
+
+  document.querySelectorAll(".toggle").forEach(btn => {
+    btn.textContent = "-";
+  });
 }
 
-function collapseAllSubtrees(element){
-	var subtrees = document.getElementsByClassName("subtree");
-	for(var i=0; i<subtrees.length; i++){
-		var subtree = subtrees[i];
-		subtree.classList.add('hide');
-		subtree.previousElementSibling.firstChild.textContent = '+';
-	}
+function collapseAllSubtrees() {
+  document.querySelectorAll(".subtree").forEach(ul => {
+    ul.classList.add("hide");
+  });
+
+  document.querySelectorAll(".toggle").forEach(btn => {
+    btn.textContent = "+";
+  });
 }
+
+// ===== SIDEBAR TOGGLE =====
 function toggle_tree_panel() {
-	var tree = get_tree_panel();
-	var toggle_btn = document.getElementById('tree_panel_toggle_btn')
-	if (tree.style.display === 'none') {
-		tree.style.display = 'inline'
-		toggle_btn.innerHTML = left_arrow_heavy
-		toggle_btn.onmouseenter = null
-	} else {
-		tree.style.display = 'none'
-		toggle_btn.innerHTML = right_arrow_heavy
-		toggle_btn.onmouseenter = toggle_tree_panel
-	}
+  const sidebar = document.querySelector(".sidebar");
+  const btn = document.getElementById("tree_panel_toggle_btn");
+
+  if (sidebar.style.display === "none") {
+    sidebar.style.display = "flex";
+    btn.innerHTML = "⬅";
+  } else {
+    sidebar.style.display = "none";
+    btn.innerHTML = "➡";
+  }
 }
 
-function get_tree() {
-	return document.getElementsByClassName("tree")[0]
-}
-function get_tree_panel() {
-	return document.getElementsByClassName("tree-panel")[0]
-}
+// ===== INIT =====
+window.onload = function () {
 
+  // Crear botón toggle sidebar
+  const layout = document.querySelector(".layout");
 
-window.onload = function() {
-	var show_page = window.location.hash.substr(1);
-	if (show_page !== '') {
-		changeFrame(show_page);
-	}
+  const btn = document.createElement("button");
+  btn.id = "tree_panel_toggle_btn";
+  btn.innerHTML = "⬅";
+  btn.onclick = toggle_tree_panel;
 
-	// Unwrap the header
-	let tree = get_tree()
-	let para = tree.children[0]
+  layout.appendChild(btn);
 
-	let index_txt = para.children[0].innerHTML
-	let index_title = document.createElement("h1")
-	index_title.innerHTML = index_txt
-	index_title.id = 'index_header'
-	tree.insertBefore(index_title, tree.children[0])
+  // Restaurar última página
+  const lastPage = localStorage.getItem("last_page");
+  if (lastPage) {
+    iframe.src = lastPage;
+  }
 
+  // KEYBINDS
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      toggle_tree_panel();
+    }
+  });
 
-	// Remove unwrapped elements
-	para.removeChild(para.children[0])
-
-	// Keybinds
-	document.onkeydown = handle_keypress
-
-	// Toggle tree panel button
-	let panels = document.getElementsByClassName("two-panels")[0]
-	let toggle_btn = document.createElement("button")
-	toggle_btn.onclick = toggle_tree_panel
-	toggle_btn.innerHTML = left_arrow_heavy
-	toggle_btn.id = 'tree_panel_toggle_btn'
-	panels.insertBefore(toggle_btn, panels.children[1])
-
-}
-
-function handle_keypress(ev) {
-	switch(ev.key) {
-		case "Escape":
-			toggle_tree_panel()
-			break
-	}
-}
+};
