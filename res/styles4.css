@@ -1,157 +1,140 @@
 /*******************************************************************************
- * RED TEAM / HACKER DARK THEME para CherryTree
- * Colores: 
- * - Fondo: #0d1117 (GitHub Dark)
- * - Texto: #c9d1d9
- * - Acento (Hacking): #238636 (Verde) / #da3633 (Rojo)
+ * RED TEAM RESPONSIVE THEME
+ * Adaptado para: f1t1p4ld1.github.io
  ******************************************************************************/
 
-@import url(https://fonts.googleapis.com/css?family=Fira+Code:400,600|Open+Sans:400,600);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Open+Sans:wght@300;400;600&display=swap');
 
-body {
-    font-size: 14px;
-    font-family: "Open Sans", sans-serif !important;
-    background-color: #0d1117;
-    color: #c9d1d9;
-    white-space: pre-wrap;
+/* VARIABLES DE COLOR */
+:root {
+    --bg-main: #0d1117;
+    --bg-panel: #161b22;
+    --text-main: #c9d1d9;
+    --text-muted: #8b949e;
+    --accent-green: #238636;
+    --accent-blue: #58a6ff;
+    --border-color: #30363d;
 }
 
-/* PANELISTAS */
-.two-panels {
-    background: #0d1117;
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Open Sans', sans-serif;
+    overflow: hidden; /* Evita doble scroll */
 }
 
+/* ESTRUCTURA DE PANELES */
 div.two-panels {
     display: flex;
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
+    height: 100vh;
+    width: 100vw;
 }
 
+/* PANEL IZQUIERDO (MENU) */
 div.tree-panel {
-    flex: 20vw;
-    background-color: #161b22;
-    border-right: 2px solid #30363d;
+    flex: 0 0 300px; /* Ancho fijo en escritorio */
+    background-color: var(--bg-panel);
+    border-right: 1px solid var(--border-color);
     overflow-y: auto;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
+/* PANEL DERECHO (CONTENIDO) */
 div.page-panel {
-    flex: 80vw;
-    background-color: #0d1117;
+    flex: 1;
+    background-color: var(--bg-main);
+    display: flex;
+    flex-direction: column;
 }
 
-/* ÁRBOL DE NAVEGACIÓN (Izquierda) */
+iframe#page_frame {
+    flex: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-main);
+}
+
+/* ESTILO DEL ÁRBOL (INDEX) */
 div.tree {
-    font-size: 13px;
-    color: #8b949e;
+    font-size: 14px;
 }
 
-div.tree a, div.tree a:visited {
-    color: #8b949e;
+div.tree strong {
+    color: var(--accent-blue);
+    font-family: 'Fira Code', monospace;
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* BOTONES DE EXPANDIR/CONTRAER */
+div.tree button {
+    background-color: #21262d;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    margin-bottom: 10px;
     transition: 0.2s;
 }
 
-div.tree li.leaf {
-    line-height: 2.2;
-    border-left: 2px solid transparent;
+div.tree button:hover {
+    color: var(--accent-green);
+    border-color: var(--accent-green);
 }
 
-div.tree li:hover {
-    background: #21262d;
-    color: #58a6ff;
-    border-left: 2px solid #238636; /* Detalle verde al pasar el mouse */
+/* LINKS DEL ÁRBOL */
+div.tree ul {
+    list-style: none;
+    padding-left: 15px;
 }
 
-/* PÁGINA DE CONTENIDO */
-div.page {
-    padding: 30px;
-    background-color: #0d1117;
+div.tree a {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-block;
+    padding: 3px 0;
+    transition: 0.2s;
 }
 
-/* TÍTULOS */
-div.page h1.title {
-    background: #21262d;
-    color: #58a6ff;
-    padding: 15px;
-    border-radius: 6px;
-    border: 1px solid #30363d;
+div.tree a:hover {
+    color: var(--accent-blue);
+    transform: translateX(3px);
+}
+
+/* DISEÑO RESPONSIVE (MÓVILES) */
+@media (max-width: 768px) {
+    div.two-panels {
+        flex-direction: column; /* Apila menú sobre contenido */
+    }
+
+    div.tree-panel {
+        flex: 0 0 40%; /* El menú ocupa el 40% arriba */
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    div.page-panel {
+        flex: 0 0 60%; /* El contenido ocupa el resto */
+        width: 100%;
+    }
+    
+    div.tree strong {
+        text-align: center;
+    }
+}
+
+/* Estilo para bloques de código dentro del iframe (si el iframe hereda estilos) */
+pre, code {
     font-family: 'Fira Code', monospace;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-div.page h2, div.page h3 {
-    color: #238636; /* Verde hacking para secciones */
-    border-bottom: 1px solid #30363d;
-    display: block;
-    padding-bottom: 5px;
-    margin-top: 1.5em;
-}
-
-/* TABLAS (Para resultados de Nmap/Escaneos) */
-table {
-    border: 1px solid #30363d;
-    border-collapse: collapse;
-    background-color: #161b22;
-    width: 100%;
-    margin: 15px 0;
-}
-
-th {
-    background-color: #21262d;
-    color: #58a6ff;
-    font-weight: bold;
-}
-
-td, th {
-    padding: 10px;
-    border: 1px solid #30363d;
-}
-
-tr:hover {
-    background-color: #1c2128;
-}
-
-/* BLOQUES DE CÓDIGO (Terminal Style) */
-div.page code, div.page pre {
-    font-family: "Fira Code", "Courier New", monospace;
-    background-color: #000000; /* Fondo negro puro para la consola */
-    color: #00ff00; /* Letra verde clásica de terminal */
-    border: 1px solid #238636;
-    padding: 10px;
-    border-radius: 4px;
-    box-shadow: inset 0 0 10px rgba(35, 134, 54, 0.2);
-}
-
-div.codebox {
-    width: 95%;
-    margin: 10px 0;
-}
-
-/* IMÁGENES */
-img {
-    border: 2px solid #30363d;
-    border-radius: 8px;
-    max-width: 100%;
-    margin: 20px 0;
-    transition: transform 0.3s;
-}
-
-img:hover {
-    transform: scale(1.02); /* Efecto zoom suave */
-    border-color: #58a6ff;
-}
-
-/* SCROLLBAR (Para que no rompa la estética) */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: #0d1117;
-}
-::-webkit-scrollbar-thumb {
-    background: #30363d;
-    border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #8b949e;
+    background-color: #000 !important;
+    color: #00ff00 !important;
 }
