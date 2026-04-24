@@ -55,6 +55,34 @@ function toggleSubTree(button) {
   subtree.style.transition = "all 0.2s ease";
 }
 
+// ===== INIT =====
+window.onload = function () {
+
+  // Crear botón toggle sidebar
+  const layout = document.querySelector(".layout");
+
+  const btn = document.createElement("button");
+  btn.id = "tree_panel_toggle_btn";
+  btn.innerHTML = "⬅";
+  btn.onclick = toggle_tree_panel;
+
+  layout.appendChild(btn);
+
+  // Restaurar última página
+  const lastPage = localStorage.getItem("last_page");
+  if (lastPage) {
+    iframe.src = lastPage;
+  }
+
+  // KEYBINDS
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      toggle_tree_panel();
+    }
+  });
+
+};
+
 // ===== EXPAND / COLLAPSE ALL =====
 function expandAllSubtrees() {
   document.querySelectorAll(".subtree").forEach(ul => {
@@ -89,31 +117,3 @@ function toggle_tree_panel() {
     btn.innerHTML = "➡";
   }
 }
-
-// ===== INIT =====
-window.onload = function () {
-
-  // Crear botón toggle sidebar
-  const layout = document.querySelector(".layout");
-
-  const btn = document.createElement("button");
-  btn.id = "tree_panel_toggle_btn";
-  btn.innerHTML = "⬅";
-  btn.onclick = toggle_tree_panel;
-
-  layout.appendChild(btn);
-
-  // Restaurar última página
-  const lastPage = localStorage.getItem("last_page");
-  if (lastPage) {
-    iframe.src = lastPage;
-  }
-
-  // KEYBINDS
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      toggle_tree_panel();
-    }
-  });
-
-};
